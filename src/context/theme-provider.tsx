@@ -2,12 +2,23 @@ import React, { createContext, useContext, useState, useEffect, useRef } from "r
 
 type ThemeMode = "light" | "dark" | "custom";
 
-// We define the specific semantic colors we allow users to override
 interface ThemeColors {
   background?: string;
   foreground?: string;
+  card?: string;
+  "card-foreground"?: string;
+  popover?: string;
+  "popover-foreground"?: string;
   primary?: string;
   "primary-foreground"?: string;
+  secondary?: string;
+  "secondary-foreground"?: string;
+  muted?: string;
+  "muted-foreground"?: string;
+  accent?: string;
+  "accent-foreground"?: string;
+  destructive?: string;
+  "destructive-foreground"?: string;
   border?: string;
   input?: string;
   ring?: string;
@@ -26,12 +37,10 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-// Helper: Hex to HSL conversion for Tailwind compatibility
-// Tailwind needs "222.2 47.4% 11.2%" format to support opacity
 function hexToHsl(hex: string): string | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (!result) return null;
-  
+
   let r = parseInt(result[1], 16) / 255;
   let g = parseInt(result[2], 16) / 255;
   let b = parseInt(result[3], 16) / 255;
@@ -50,7 +59,6 @@ function hexToHsl(hex: string): string | null {
     h /= 6;
   }
 
-  // Round values for cleaner CSS
   const hDeg = Math.round(h * 360);
   const sPct = Math.round(s * 100);
   const lPct = Math.round(l * 100);
@@ -66,28 +74,23 @@ export const ThemeProvider = ({ children, defaultTheme = "light", defaultColors 
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
-    // 1. Handle Classes (Light/Dark)
     wrapper.classList.remove("light", "dark", "custom");
     wrapper.classList.add(newTheme);
 
-    // 2. Handle Custom Colors (Runtime Injection)
     if (newTheme === "custom" && colors) {
       Object.entries(colors).forEach(([key, value]) => {
         const hsl = hexToHsl(value);
         if (hsl) {
-          // Set the variable that Tailwind reads (e.g., --primary)
           wrapper.style.setProperty(`--${key}`, hsl);
         }
       });
     } else {
-      // Clean up custom inline styles if switching back to presets
       wrapper.removeAttribute("style");
     }
 
     setThemeState(newTheme);
   };
 
-  // Initialize on mount
   useEffect(() => {
     setTheme(defaultTheme, defaultColors);
   }, []);

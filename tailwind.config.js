@@ -1,4 +1,4 @@
-import { customiseUI, neonPreset } from "./src/plugins";
+import { customiseUI, neonPreset, rainbowPreset } from "./src/plugins";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -9,7 +9,8 @@ export default {
   darkMode: "class", // Important for our .dark class strategy
   theme: {
     extend: {
-      ...neonPreset.theme.extend
+      ...neonPreset.theme.extend,
+      ...rainbowPreset.theme.extend
     },
   },
   plugins: [
