@@ -66,6 +66,31 @@
       "import": "./dist/components/tooltip/index.js",
       "require": "./dist/components/tooltip/index.cjs"
     },
+    "./components/sonner": {
+      "types": "./dist/components/sonner/index.d.ts",
+      "import": "./dist/components/sonner/index.js",
+      "require": "./dist/components/sonner/index.cjs"
+    },
+    "./components/sheet": {
+      "types": "./dist/components/sheet/index.d.ts",
+      "import": "./dist/components/sheet/index.js",
+      "require": "./dist/components/sheet/index.cjs"
+    },
+    "./components/skeleton": {
+      "types": "./dist/components/skeleton/index.d.ts",
+      "import": "./dist/components/skeleton/index.js",
+      "require": "./dist/components/skeleton/index.cjs"
+    },
+    "./components/accordion": {
+      "types": "./dist/components/accordion/index.d.ts",
+      "import": "./dist/components/accordion/index.js",
+      "require": "./dist/components/accordion/index.cjs"
+    },
+    "./components/popover": {
+      "types": "./dist/components/popover/index.d.ts",
+      "import": "./dist/components/popover/index.js",
+      "require": "./dist/components/popover/index.cjs"
+    },
     "./plugins": {
       "types": "./dist/plugins/index.d.ts",
       "import": "./dist/plugins/index.js",
@@ -134,9 +159,11 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.4",
     "@radix-ui/react-switch": "^1.2.6",
@@ -145,6 +172,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.555.0",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0"
   }
 }
