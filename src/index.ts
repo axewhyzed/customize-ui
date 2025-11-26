@@ -1,5 +1,3 @@
-// src/index.ts
-import "./styles/index.css"; // reset + theme
-
-export * from "./components/index";  // exports everything from components/index.ts
-export * from "./context/ThemeProvider";
+export * from "./context/theme-provider";
+export * from "./components";
+export * from "./lib/utils"; // Often useful for users

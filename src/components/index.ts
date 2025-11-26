@@ -1,9 +1,7 @@
-// src/components/index.ts
-export * from "./Button";
-export * from "./Card";
-export * from "./Text";
-export * from "./Input";
-export * from "./Box";
-export * from "./Checkbox";
-export * from "./Radio";
-export * from "./Select";
+export * from "./button";
+export * from "./card";
+export * from "./input";
+export * from "./select";
+export * from "./switch";
+export * from "./dialog";
+export * from "./dropdown-menu";

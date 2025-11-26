@@ -1,18 +1,18 @@
+import { customiseUI, neonPreset } from "./src/plugins";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}"
   ],
+  darkMode: "class", // Important for our .dark class strategy
   theme: {
     extend: {
-      colors: {
-        primary: "rgb(var(--color-primary) / <alpha-value>)",
-        bg: "rgb(var(--color-bg) / <alpha-value>)",
-        text: "rgb(var(--color-text) / <alpha-value>)",
-      },
+      ...neonPreset.theme.extend
     },
   },
-  plugins: [],
+  plugins: [
+    customiseUI
+  ],
 }
-
