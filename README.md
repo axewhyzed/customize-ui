@@ -1,117 +1,167 @@
 # CustomiseUI
 
-A lightweight, themeable React component library with scoped theming support. Designed for fast prototyping and production-ready UI, with components that adapt to **light**, **dark**, or **custom** themes.
+A lightweight, highly customisable, and simple React component library built for speed and flexibility. Powered by **Radix UI** for accessibility and **Tailwind CSS** for styling, it introduces a unique "Scoped Theming" engine and "Vibe" presets to bring your interfaces to life.
+
+> **Core Philosophy**
+> - **Lightweight:** Minimal footprint, exporting only what you need via tree-shakable builds.
+> - **Customisable:** Runtime theming allows you to change colors on the fly without complex CSS-in-JS overrides.
+> - **Simple:** Plug-and-play components that work instantly with your existing Tailwind setup.
 
 ---
 
-## Features
+## 📦 Installation
 
-- **Themeable**: Scoped theme system with `light`, `dark`, and `custom` themes.  
-- **Custom Colors**: Override theme colors dynamically with JS.  
-- **Base Components**: Pre-styled components like Button, Card, Input, Checkbox, Radio, Select, Text, and Box.  
-- **TailwindCSS Powered**: Fully compatible with Tailwind utilities.  
-- **Scoped Styling**: Components can adopt the theme within a region without affecting global styles.  
-
----
-
-## Installation
-
-~~~bash
-# Using npm
+```bash
 npm install customise-ui
-
-# Using yarn
+# or
 yarn add customise-ui
-
-# Using pnpm
+# or
 pnpm add customise-ui
-~~~
+````
 
----
+-----
 
-## Usage
+## ⚙️ Configuration
 
-~~~tsx
-import React from "react";
-import { ThemeProvider, CUButton, CUCard, CUText, CUInput } from "customise-ui";
+To enable the theming engine and animation presets, add the plugin to your `tailwind.config.js`:
 
-const App = () => {
+```javascript
+import { customiseUI, neonPreset, rainbowPreset } from "customise-ui/plugins";
+
+export default {
+  content: [
+    "./src/**/*.{ts,tsx}",
+    // Ensure Tailwind scans the library's built files for classes
+    "./node_modules/customise-ui/dist/**/*.{js,ts,jsx,tsx}"
+  ],
+  theme: {
+    extend: {
+      // Optional: Add Vibe Presets here
+      ...neonPreset.theme.extend,
+      ...rainbowPreset.theme.extend,
+    },
+  },
+  plugins: [customiseUI],
+}
+```
+
+-----
+
+## 🚀 Usage
+
+Wrap your application (or specific sections) in the `ThemeProvider` to unlock scoped styling.
+
+```tsx
+import { ThemeProvider, CUButton, CUCard, CUInput } from "customise-ui";
+
+export default function App() {
   return (
-    <ThemeProvider
-      config={{
-        initialTheme: "custom",
-        customColors: { bg: "#1a1a1a", text: "#fff", primary: "#ff5722" },
-      }}
-    >
-      <CUText size="xl" weight="bold">Themed Components</CUText>
-      <CUCard>
-        <CUInput label="Name" placeholder="Enter your name" />
-        <CUButton>Submit</CUButton>
-      </CUCard>
+    <ThemeProvider defaultTheme="light">
+      <div className="p-10 space-y-4">
+        
+        {/* Standard Light Mode Component */}
+        <CUCard className="p-6">
+          <h2 className="text-xl font-bold">Standard Card</h2>
+          <CUButton>Default Button</CUButton>
+        </CUCard>
+
+        {/* Scoped Dark Mode Section */}
+        <ThemeProvider defaultTheme="dark">
+          <CUCard className="p-6">
+             <h2 className="text-xl font-bold">Dark Mode Context</h2>
+             <CUInput placeholder="I am dark themed..." />
+             <CUButton variant="secondary">Secondary Action</CUButton>
+          </CUCard>
+        </ThemeProvider>
+
+      </div>
     </ThemeProvider>
   );
-};
+}
+```
 
-export default App;
-~~~
+-----
 
----
+## 🎨 Scoped & Dynamic Theming
 
-## Components
+The most powerful feature of **CustomiseUI** is the ability to generate themes at runtime using the `custom` mode. You can pass raw Hex codes, and the library handles the variable conversion dynamically.
 
-| Component | Description |
-|-----------|-------------|
-| `CUButton` | Button element with theme-aware colors |
-| `CUCard` | Card container with padding, shadow, and border |
-| `CUInput` | Text input with label support |
-| `CUCheckbox` | Checkbox with optional label |
-| `CURadio` | Radio button with label |
-| `CUSelect` | Select dropdown with label |
-| `CUText` | Paragraph text with size and weight options |
-| `CUBox` | Flexible div wrapper for layout and spacing |
+This is perfect for white-labeling or user-defined preferences.
 
----
-
-## Theming
-
-The library supports **scoped themes** using `ThemeProvider`:
-
-- `initialTheme`: `"light" | "dark" | "custom"`  
-- `customColors`: Object with `bg`, `text`, `primary` keys to override the default theme colors.
-
-~~~tsx
-<ThemeProvider
-  config={{
-    initialTheme: "custom",
-    customColors: { bg: "#222", text: "#fff", primary: "#ff9800" },
+```tsx
+<ThemeProvider 
+  defaultTheme="custom"
+  defaultColors={{
+    primary: "#6366f1",         // Indigo
+    background: "#0f172a",      // Slate 900
+    foreground: "#f8fafc",      // Slate 50
+    card: "#1e293b",            // Slate 800
+    "card-foreground": "#e2e8f0"
   }}
 >
-  {/* Your themed components */}
+  <div className="bg-background text-foreground min-h-screen p-10">
+    <h1 className="text-primary text-4xl font-bold">Brand New Theme</h1>
+    <p className="text-muted-foreground">Generated instantly at runtime.</p>
+  </div>
 </ThemeProvider>
-~~~
+```
 
-Components inside the provider automatically inherit theme colors. Components outside the provider use **default colors** defined in CSS variables.
+-----
 
----
+## ✨ Vibe Presets
 
-## Styling
+Go beyond flat colors with **Vibe Presets**. These inject keyframes and utility classes for special aesthetic modes.
 
-- Based on **TailwindCSS** utility classes.  
-- CSS variables control theme colors: `--color-bg`, `--color-text`, `--color-primary`.  
-- You can override styles per component using `className`.
+### Available Vibes
 
----
+1.  **Neon**: Adds `animate-pulse-glow` and high-contrast shimmer effects.
+2.  **Rainbow**: Adds `animate-rainbow-flow` and smooth gradient transitions.
 
-## Contributing
+### Usage
 
-1. Fork the repo  
-2. Run `npm install`  
-3. Make changes in `src/components` or `src/context`  
-4. Test using the playground in `src/playground`  
-5. Build the library: `npm run build`  
+Combine `custom` themes with Vibe utility classes:
 
----
+```tsx
+import { CUButton, CUBadge } from "customise-ui";
 
-## License
+// "Shimmer" variant uses the Neon preset animations
+<CUButton variant="shimmer">
+  Neon Action
+</CUButton>
 
-MIT © Mihir Bambhaniya
+// "Rainbow" variant uses the Rainbow preset gradients
+<CUBadge variant="rainbow">
+  PRO Feature
+</CUBadge>
+```
+
+-----
+
+## 🧩 Components
+
+All components are built on **Radix UI** primitives for full WAI-ARIA compliance and keyboard accessibility.
+
+| Category | Components |
+| :--- | :--- |
+| **Inputs** | `CUInput`, `CUSelect`, `CUSwitch` |
+| **Layout** | `CUCard`, `CUSheet`, `CUDialog`, `CUAccordion`, `CUTabs` |
+| **Feedback** | `CUToaster` (Sonner wrapper), `CUBadge`, `CUSkeleton`, `CUTooltip` |
+| **Overlay** | `CUPopover`, `CUDropdownMenu` |
+| **Elements** | `CUButton`, `CUAvatar` |
+
+-----
+
+## 🤝 Contributing
+
+Contributions are welcome\! Please run the following to get started:
+
+1.  Clone the repository
+2.  Install dependencies: `npm install`
+3.  Start the playground: `npm run dev`
+4.  Build the library: `npm run build`
+
+-----
+
+## 📄 License
+
+MIT © [Mihir Bambhaniya](https://github.com/axewhyzed)
